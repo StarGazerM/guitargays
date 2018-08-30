@@ -16,10 +16,10 @@ buildscript {
 
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
-apply plugin: 'eclipse'
+apply plugin: 'kotlin-jpa'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'kotlin-jpa'
 
 //plugins {
 //    id "org.jetbrains.kotlin.plugin.jpa" version "1.2.60"
@@ -36,7 +36,7 @@ compileKotlin {
 }
 compileTestKotlin {
 	kotlinOptions {
-		freeCompilerArgs = ["-Xjsr305=strict"]
+		freeCompilerArgs = ["-Xjsr305=strict", "--add-opens java.base/java.lang=ALL-UNNAMED"]
 		jvmTarget = "1.8"
 	}
 }
@@ -55,10 +55,13 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-reflect")
     compile("javax.xml.bind:jaxb-api")
 	runtime('com.h2database:h2')
+	implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.25.0'
+
 	// testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.boot:spring-boot-starter-test') {
 		exclude module: 'junit'
 	}
+	testCompile("com.nhaarman:mockito-kotlin:1.5.0")
 	testImplementation('org.junit.jupiter:junit-jupiter-api')
 	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }

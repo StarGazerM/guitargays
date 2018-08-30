@@ -5,6 +5,8 @@ import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 
+// this is just for testing boot and expose test
+
 @Controller
 class HelloController {
 
