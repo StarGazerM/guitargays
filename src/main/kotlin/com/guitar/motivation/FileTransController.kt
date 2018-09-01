@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
+data class FileStoredVO(val uid: Long, val title: String, val fileName: String, val type: Int)
+
 @RestController
 class FileTransController(private val fileRepo: FileStoredRepo,
                           private val userRepo: UserRepo,
@@ -20,9 +22,8 @@ class FileTransController(private val fileRepo: FileStoredRepo,
             return "failed"
         }
         val f = FileStored(title = title, type = type, path="/${uid}/$title", user = userRepo.findById(uid).get())
-        fileRepo.save(f)
         fileService(file, name, path="/${uid}/$title")
-
+        fileRepo.save(f)
         return "uploaded"
     }
 }

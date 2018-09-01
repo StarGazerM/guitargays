@@ -23,6 +23,9 @@ class MediaController(private val fileRepo: FileStoredRepo, private val userRepo
        // return fileRepo.findByUserIdAndType(uid, t)
         return emptyList()
     }
+
+    @DeleteMapping("/delete/{fid}")
+    fun deleteOne(@PathVariable fid : Long) = fileRepo.deleteById(fid)
 }
 
 @RestController
@@ -40,11 +43,17 @@ class UserController(private val userRepo: UserRepo) {
 
     @PutMapping("/updateOne")
     fun modifyUser(user: User): String {
+        // need to authencated here
         return if (userRepo.existsById(user.id!!)) {
             userRepo.save(user)
             "success"
         } else {
             "failed"
         }
+    }
+
+    @PostMapping("/login")
+    fun login(){
+
     }
 }

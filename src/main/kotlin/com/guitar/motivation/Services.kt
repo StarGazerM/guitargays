@@ -14,8 +14,8 @@ class FileService : (MultipartFile, String, String) -> Boolean{
 
     override fun invoke (file: MultipartFile, fileName : String, path : String) : Boolean {
         launch(CommonPool) {
-            var input = file.inputStream
-            var output = FileOutputStream(File(path))
+            val input = file.inputStream
+            val output = FileOutputStream(File(path))
             input.copyTo(output)
             output.flush()
             input.close()
@@ -23,5 +23,12 @@ class FileService : (MultipartFile, String, String) -> Boolean{
         }
         return true
     }
-
 }
+
+//@Service
+//class AuthenticationService(private val userRepo: UserRepo) {
+//
+//    fun validate() {
+//        val loginedUser = request.
+//    }
+//}
