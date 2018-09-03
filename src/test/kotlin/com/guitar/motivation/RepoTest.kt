@@ -51,9 +51,13 @@ class RepoTest(@Autowired val entityManager: TestEntityManager,
         assert(found.isNotEmpty())
     }
 
-//    @Test
-//    fun `when find a file by it's owner id and type` () {
-//        val found = fileStoredRepo.findByUserIdAndType(uid, AUDIO)
-//        assert(found.isNotEmpty())
-//    }
+    @Test
+    fun test_find_by_id_and_password() {
+        val u = User(null,true, "test user","test",
+                "1", "fake", null, mutableListOf())
+        val uid = entityManager.persistAndGetId(u) as Long
+
+        val foundU = userRepo.findByUsernameAndPassword("test user", "test")
+        assert(foundU.isPresent)
+    }
 }

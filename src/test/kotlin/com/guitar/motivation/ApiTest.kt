@@ -29,11 +29,13 @@ class ApiTest(@Autowired private val mockMvc: MockMvc) {
     @MockBean
     private lateinit var fileService: FileService
 
+    private val u = User(1,true, "test user","test", "1",
+            "fake", null, mutableListOf())
+    val m = FileStored(1,"test media","/a/a", u, AUDIO)
+
     @Test
     fun test_user_info_api(){
-        val u = User(1,true, "test user","test", "1",
-                "fake", null, mutableListOf())
-        val m = FileStored(1,"test media","/a/a", u, AUDIO)
+
         whenever(userRepo.findById(1)).thenReturn(Optional.of(u))
         mockMvc.perform (get("/api/user/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
@@ -42,9 +44,16 @@ class ApiTest(@Autowired private val mockMvc: MockMvc) {
     }
 
     @Test
+    fun test_list_user_api(){
+        whenever(userRepo.findAll()).thenReturn(listOf(u))
+        mockMvc.perform(get("/api/user/").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("\$.[0].username").value("test user"))
+    }
+
+    @Test
     fun test_upload_file_api(){
-        val u = User(1,true, "test user","test", "1",
-                "fake", null, mutableListOf())
 
         val fileInput = FileInputStream("D:\\workspace\\kotlin\\motivation\\motivation\\src\\test\\resources\\zs.png")
         val mockFile = MockMultipartFile("file", fileInput)
