@@ -33,7 +33,7 @@ class MediaController(private val fileRepo: FileStoredRepo, private val userRepo
 
 @RestController
 @RequestMapping("/api/user")
-class UserController(private val userRepo: UserRepo) {
+class UserApiController(private val userRepo: UserRepo) {
 
     @GetMapping("/")
     @AuthTag(AuthType.USER)
