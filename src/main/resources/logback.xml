@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <contextName>logback</contextName>
+    <property name="log.path" value="C:\\log\\" />
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <encoder>
+            <pattern>%red(%d{yyyy-MM-dd HH:mm}) %yellow([%thread]) %highlight(%-5level) %boldMagenta(%logger) %cyan(%msg%n)
+            </pattern>
+        </encoder>
+    </appender>
+    <springProfile name="!dev">
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    </springProfile>
+
+    <springProfile name="dev">
+        <root level="debug">
+            <appender-ref ref="console" />
+        </root>
+    </springProfile>
+
+    <springProfile name="!dev">
+        <root level="info">
+            <appender-ref ref="console" />
+            <appender-ref ref="file" />
+        </root>
+        <!--<logger name="org.springframework.scheduling"  level="error" />-->
+    </springProfile>
+
+</configuration>

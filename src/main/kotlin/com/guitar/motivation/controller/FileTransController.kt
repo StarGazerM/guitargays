@@ -25,7 +25,7 @@ class FileTransController(private val userRepo: UserRepo,
         }
 
         val fileInfo = FileStored(title = title, type = type, path = "/${uid}/$title", user = userRepo.findById(uid).get())
-        fileService.save(file, fileInfo)
+        fileService.save(file, fileInfo, "")
         return "uploaded"
     }
 }

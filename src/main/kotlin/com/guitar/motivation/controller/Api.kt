@@ -74,7 +74,6 @@ class UserApiController(private val userRepo: UserRepo) {
 // test the environment outside
 @Controller
 class HelloController {
-
     @GetMapping("/")
     fun hello(model : Model) : String {
         model["foo"] = "bar"
