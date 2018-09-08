@@ -1,5 +1,7 @@
 package com.guitar.motivation
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
@@ -17,21 +19,26 @@ data class ErrorInfo(val requestUrl: String, val message: String?, val code: Int
 @ControllerAdvice
 class ExceptionDispatcher {
 
+    var log: Logger = LoggerFactory.getLogger(ExceptionDispatcher::class.java)
+
     @ExceptionHandler(AuthenticationException::class)
     @ResponseBody
     fun authExceptionHandler(request: HttpServletRequest, exception: AuthenticationException): ErrorInfo {
+        this.log.error(exception.message)
         return ErrorInfo(request.requestURI, exception.message, AUTH_FAILED_CODE)
     }
 
     @ExceptionHandler(FileOperationException::class)
     @ResponseBody
     fun fileOperationFailedHandler(request: HttpServletRequest, exception: FileOperationException): ErrorInfo{
+        this.log.error(exception.message)
         return ErrorInfo(request.requestURI, exception.message, FILE_OP_FAILED_CODE)
     }
 
     @ExceptionHandler(IOException::class)
     @ResponseBody
     fun fileExceptionHandler(request: HttpServletRequest, exception: IOException): ErrorInfo {
+        this.log.error(exception.message)
         return ErrorInfo(request.requestURI, "file operation failed.", AUTH_FAILED_CODE)
     }
 }
